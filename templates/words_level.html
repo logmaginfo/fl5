@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ super() }}
+    <h1>
+    <a href="/words/" type="submit" class="btn btn-warning m-1">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-chevron-compact-left" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M9.224 1.553a.5.5 0 0 1 .223.67L6.56 8l2.888 5.776a.5.5 0 1 1-.894.448l-3-6a.5.5 0 0 1 0-.448l3-6a.5.5 0 0 1 .67-.223"/>
+    </svg>
+    </a>
+        Словарь английских слов. Уровень: {{ level.capitalize() }} <span class="fs-4">({{ phoneru }}) ({{ total_items }})</span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-paragraph" viewBox="0 0 16 16">
+    <path d="M10.5 15a.5.5 0 0 1-.5-.5V2H9v12.5a.5.5 0 0 1-1 0V9H7a4 4 0 1 1 0-8h5.5a.5.5 0 0 1 0 1H11v12.5a.5.5 0 0 1-.5.5"/>
+    </svg>
+    </h1>
+    <p class="card-text">
+        {% for l in level_words %}
+         <a href="/words/word_level/{{ l }}" type="button" class="btn btn-warning m-1">{{ l }}</a>
+        {% endfor %}
+    </p>
+        <p class="card-text">
+         <a href="/words/word_level/{{ level }}?phone=all" type="button" class="btn btn-warning m-1">ВСЕ</a>
+         {% for p in phonetics %}
+         <a href="/words/word_level/{{ level }}?phone={{ p[0] }}" type="button" class="btn btn-warning m-1">{{ p[1] }}</a>
+        {% endfor %}
+    </p>
+
+
+    {% set count = namespace(value=0) %}
+    {% for word in words %}
+    <div class="card m-1" style="width: 20em; float: left">
+      <div class="card-body">
+          <span id="y{{ word[0].id }}"></span>
+        <h5 class="card-title">
+            <a href="/words/word_word/{{ word[0].id }}">
+            {{ word[0].word }}
+            </a>
+        </h5>
+          <!--------------FORM-HOME--------------->
+        {% if word[1]==1 %}
+               <audio controls>
+                <source src="{{ url_for('static', filename=word[2]) }}" type="audio/mp3">
+               </audio>
+        {% else %}
+
+          <form method="post" action="{{ url_for(request.endpoint, **request.view_args) }}?page={{ page }}&phone={{ phone }}#y{{ word[0].id }}">
+              {{ csrf_token }}
+              <input type="hidden" name="sound" value="ok">
+              <input type="hidden" name="id" value="{{ word[0].id }}">
+                  <!--span class="title" data-title=" Прослушать на английском "-->
+              <button type="submit" class="btn btn-primary m-1" >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-volume-down" viewBox="0 0 16 16">
+                  <path d="M9 4a.5.5 0 0 0-.812-.39L5.825 5.5H3.5A.5.5 0 0 0 3 6v4a.5.5 0 0 0 .5.5h2.325l2.363 1.89A.5.5 0 0 0 9 12zM6.312 6.39 8 5.04v5.92L6.312 9.61A.5.5 0 0 0 6 9.5H4v-3h2a.5.5 0 0 0 .312-.11M12.025 8a4.5 4.5 0 0 1-1.318 3.182L10 10.475A3.5 3.5 0 0 0 11.025 8 3.5 3.5 0 0 0 10 5.525l.707-.707A4.5 4.5 0 0 1 12.025 8"/>
+              </svg>
+              </button>
+                      </span>
+              </form>
+          {% endif %}
+          <!--------------FORM-END---------------->
+      </div>
+      <!------------------------------------------RU-HOME----------------------------->
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingOne">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne{{ count.value }}" aria-expanded="false" aria-controls="flush-collapseOne">
+                Перевод
+              </button>
+            </h2>
+            <div id="flush-collapseOne{{ count.value }}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+              <div class="accordion-body">
+                  {{ word[0].trl }} {{ word[0].trt }}
+                  {% if word[0].past %}
+                      <hr>
+                      Прошедшее время: {{ word[0].past }} {{ word[0].past_trl }}<hr>
+                      Причастие: {{ word[0].comm }} {{ word[0].comm_trl }} {{ word[0].comm_trt }}
+
+                  {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      <!------------------------------------------RU-END------------------------------>
+    </div>
+      {% set count.value = count.value + 1 %}
+    {% endfor %}
+<div style="clear:both;"></div>
+ <!------------------------------------------POG-HOME------------------------------>
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+            {% if page > 1 %}
+              <li class="page-item">
+                  <a class="page-link" href="{{ url_for(request.endpoint, **request.view_args) }}?page=1&phone={{ phone }}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                      <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                    </svg>
+                  </a>
+              </li>
+              <li class="page-item">
+                  <a class="page-link" href="{{ url_for(request.endpoint, **request.view_args) }}?page={{ page - 1 }}&phone={{ phone }}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                    </svg>
+                  </a>
+              </li>
+            {% endif %}
+             <li class="page-item page-link">
+                 <b>{{ page }}</b> из {{ total_pages }}
+             </li>
+            {% if page < total_pages %}
+              <li class="page-item">
+                  <a class="page-link" href="{{ url_for(request.endpoint, **request.view_args) }}?page={{ page + 1 }}&phone={{ phone }}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                    </svg>
+                  </a>
+              </li>
+              <li class="page-item">
+                  <a class="page-link" href="{{ url_for(request.endpoint, **request.view_args) }}?page={{ total_pages }}&phone={{ phone }}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                      <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                    </svg>
+                  </a>
+              </li>
+            {% endif %}
+   </ul>
+</nav>
+ <!------------------------------------------RU-END-------------------------------->
+{% endblock %}

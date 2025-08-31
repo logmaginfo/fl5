@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ super() }}
+<h1>Английский алфавит
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bluesky" viewBox="0 0 16 16">
+      <path d="M3.468 1.948C5.303 3.325 7.276 6.118 8 7.616c.725-1.498 2.698-4.29 4.532-5.668C13.855.955 16 .186 16 2.632c0 .489-.28 4.105-.444 4.692-.572 2.04-2.653 2.561-4.504 2.246 3.236.551 4.06 2.375 2.281 4.2-3.376 3.464-4.852-.87-5.23-1.98-.07-.204-.103-.3-.103-.218 0-.081-.033.014-.102.218-.379 1.11-1.855 5.444-5.231 1.98-1.778-1.825-.955-3.65 2.28-4.2-1.85.315-3.932-.205-4.503-2.246C.28 6.737 0 3.12 0 2.632 0 .186 2.145.955 3.468 1.948"/>
+    </svg>
+</h1>
+    <div style="float:left;">
+    👨‍🦳
+    <audio controls>
+        <source src="{{ url_for('static', filename='audiosalphabet/man.mp3') }}" type="audio/mp3">
+    </audio>
+    </div>
+    <div style="float:left;">
+    👩‍🦰
+    <audio controls>
+        <source src="{{ url_for('static', filename='audiosalphabet/wum.mp3') }}" type="audio/mp3">
+    </audio>
+    </div>
+    <div style="float:left;">
+    🚸
+    <audio controls>
+        <source src="{{ url_for('static', filename='audiosalphabet/chi.mp3') }}" type="audio/mp3">
+    </audio>
+    </div>
+    <div style="float:left;">
+    🤖
+    <audio controls>
+        <source src="{{ url_for('static', filename='audiosalphabet/bot.mp3') }}" type="audio/mp3">
+    </audio>
+    </div>
+    <div style="float:left;">
+    <a href="/alphabet/test" type="button" class="btn btn-warning m-1">Тест на знание алфавита</a>
+    </div>
+    <div style="float:left;">
+             <a href="/search/words" type="button" class="btn btn-dark m-1">
+           <span class="text-warning bg-dark">
+              ПОИСК СЛОВ</span>
+
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search-heart" viewBox="0 0 16 16">
+               <path d="M6.5 4.482c1.664-1.673 5.825 1.254 0 5.018-5.825-3.764-1.664-6.69 0-5.018"/>
+               <path d="M13 6.5a6.47 6.47 0 0 1-1.258 3.844q.06.044.115.098l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1-.1-.115h.002A6.5 6.5 0 1 1 13 6.5M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11"/>
+               </svg>
+            </a>
+    </div>
+
+<div style="clear:both;"></div>
+
+    {%  for k, v in alphabet_dict.items() %}
+    <div class="card m-1" style="width: 22rem; float: left;">
+      <div class="card-body">
+        <h5 class="card-title">{{ k }}</h5>
+        <p class="card-text">
+            {{ v }}
+        </p>
+       <audio controls>
+        <source src="{{ url_for('static', filename='audiosalphabet/'+k+'.mp3') }}" type="audio/mp3">
+       </audio>
+      </div>
+    </div>
+    {%  endfor %}
+    <div style="clear:both;"></div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ super() }}
+    <h1>
+        Поиск слов
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-file-font" viewBox="0 0 16 16">
+              <path d="M10.943 4H5.057L5 6h.5c.18-1.096.356-1.192 1.694-1.235l.293-.01v6.09c0 .47-.1.582-.898.655v.5H9.41v-.5c-.803-.073-.903-.184-.903-.654V4.755l.298.01c1.338.043 1.514.14 1.694 1.235h.5l-.057-2z"/>
+              <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1"/>
+            </svg>
+             <a href="/search/words" type="button" class="btn btn-dark m-1">
+           <span class="text-warning bg-dark">
+              ПОИСК</span>
+
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search-heart" viewBox="0 0 16 16">
+               <path d="M6.5 4.482c1.664-1.673 5.825 1.254 0 5.018-5.825-3.764-1.664-6.69 0-5.018"/>
+               <path d="M13 6.5a6.47 6.47 0 0 1-1.258 3.844q.06.044.115.098l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1-.1-.115h.002A6.5 6.5 0 1 1 13 6.5M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11"/>
+               </svg>
+            </a>
+ </h1>
+    <h1>
+        Слова по уровням
+       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-paragraph" viewBox="0 0 16 16">
+  <path d="M10.5 15a.5.5 0 0 1-.5-.5V2H9v12.5a.5.5 0 0 1-1 0V9H7a4 4 0 1 1 0-8h5.5a.5.5 0 0 1 0 1H11v12.5a.5.5 0 0 1-.5.5"/>
+</svg>
+ </h1>
+    <p class="card-text">
+        {% for level in level_words %}
+         <a href="/words/word_level/{{ level }}" type="button" class="btn btn-warning m-1">{{ level }}</a>
+        {% endfor %}
+    </p>
+     <h1>
+        Слова по темам
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-filter-left" viewBox="0 0 16 16">
+        <path d="M2 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m0-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
+      </svg>
+ </h1>
+    <p class="card-text">
+        <a href="/words/word_theme/all" type="button" class="btn btn-warning m-1">ВСЕ</a><br>
+        {% for letter, themeru in themes.items() %}
+            {{ letter.capitalize() }}
+            {% for t in themeru %}
+            <a href="/words/word_theme/{{ t[0] }}" type="button" class="btn btn-warning m-1">
+                {{ t[1].capitalize() }}
+            </a>
+            {% endfor %}
+            <br>
+        {% endfor %}
+    </p>
+{% endblock %}

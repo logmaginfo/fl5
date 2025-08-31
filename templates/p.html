@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+ 
+{% block content %}
+{{ super() }}
+<h1>List of {{ total_items }} Items</h1>
+          <ul>
+            {% for item in lens %}
+              <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        <div>
+            {% if page > 1 %}
+              <a href="/p?page=1"> << </a>
+              <a href="/p?page={{ page - 1 }}"> < </a>
+            {% endif %}
+            Page {{ page }} of {{ total_pages }}
+            {% if page < total_pages %}
+              <a href="/p?page={{ page + 1 }}"> > </a>
+              <a href="/p?page={{ total_pages }}"> >> </a>
+            {% endif %}
+          </div>
+
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ super() }}
+<a href="/books" type="button" class="btn btn-warning m-1">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-chevron-compact-left" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M9.224 1.553a.5.5 0 0 1 .223.67L6.56 8l2.888 5.776a.5.5 0 1 1-.894.448l-3-6a.5.5 0 0 1 0-.448l3-6a.5.5 0 0 1 .67-.223"></path>
+    </svg>
+</a>
+ {% for level in level_books %}
+            <a href="/books/level/{{ level }}" type="button" class="btn btn-warning m-1">
+            {{ level }}
+            </a>
+ {% endfor %}
+
+ <div style="clear:both;"></div>
+<h1>Книги на английском. Уровень: {{ level }}</h1>
+
+<div class="d-flex flex-wrap align-items-stretch">
+        {%  for author, book in books_level.items() %}
+        <div class="card  m-1" style="width: 12rem; float: left;">
+         <img src="/static/book.jpg" class="card-img-top" alt="{{ book.bookru }}">
+          <div class="card-body">
+            <h5 class="card-title">Название:<br>
+                <a href="/books/book/{{ book.id_author }}/{{ book.id }}" type="submit" class="btn btn-primary m-1" class="btn btn-primary">
+                    {{ book.bookru }}
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book-half" viewBox="0 0 16 16">
+          <path d="M8.5 2.687c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
+        </svg>
+                </a></h5>
+            <p class="card-text">
+              Автор:<br>
+              <a href="/books/author/{{ book.id_author }}" type="submit" class="btn btn-warning m-1">
+                {{ author }}
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-check" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0"></path>
+              <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z"></path>
+            </svg></a>
+                <br>
+            </p>
+          </div>
+        </div>
+    {% endfor %}
+</div>
+    <div style="clear:both;"></div>
+{% endblock %}
