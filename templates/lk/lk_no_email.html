@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ super() }}
+    <h1>Подтвердите email: {{ current_user.email }}</h1>
+
+<div class="m-1">
+<!---------------------------------------------------------->
+<!---------------------------------------------------------->
+    <form id="log_reg" class="m-2" method="post" action="{{ url_for(request.endpoint, **request.view_args) }}">
+    {{ form.hidden_tag() }}
+    <input id="alphabet1" name="alphabet1" type="hidden" value="{{ current_user.id }}">
+        <br>
+        {% if not current_user.email_confirmed %}
+        <button class="g-recaptcha btn btn-primary m-1"
+            data-sitekey="{{ site_key }}"
+            data-callback='onSubmit'
+            data-action='submit'>
+            Отправить ссылку на email
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671"/>
+            </svg>
+        </button>
+        {% endif %}
+{#       {{ form.recaptcha }}#}
+       <br>
+     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+     <script>
+       function onSubmit(token) {
+         document.getElementById("log_reg").submit();
+       }
+     </script>
+{#       {{ form.submit(class="btn btn-primary m-1") }}#}
+    </form>
+</div>
+{% endblock %}

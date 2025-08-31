@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ super() }}
+<script src="https://cdn.jsdelivr.net/npm/htmx.org/dist/htmx.min.js"></script>
+<h1>
+    <a href="/words"  type="submit" class="btn btn-warning m-1">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-chevron-compact-left" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M9.224 1.553a.5.5 0 0 1 .223.67L6.56 8l2.888 5.776a.5.5 0 1 1-.894.448l-3-6a.5.5 0 0 1 0-.448l3-6a.5.5 0 0 1 .67-.223"></path>
+    </svg></a>
+    Поиск слов на eng3.ru
+    {% if query %}
+        : "{{ query }}"
+    {% endif %}</h1>
+<form id="log_reg" class="m-2" method="post" action="{{ url_for(request.endpoint, **request.view_args) }}">
+    {{ form.hidden_tag() }}
+
+
+<div class="input-group mb-3 w-75">
+  <input type="text"
+         class="form-control"
+         aria-label="Recipient's username"
+         aria-describedby="button-addon2"
+         id="form1"
+         placeholder="{{ form.query.description }}"
+         name="query"
+         hx-get="{{ url_for(request.endpoint, **request.view_args) }}"
+         hx-trigger="keyup changed delay:500ms"
+         hx-target="#results"
+         maxlength="30">
+
+  <button
+          class="btn btn-outline-secondary g-recaptcha"
+          type="button"
+          id="button-addon2"
+          data-mdb-ripple-init
+          data-sitekey="{{ site_key }}"
+          data-callback='onSubmit'
+          data-action='submit'>
+
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search-heart" viewBox="0 0 16 16">
+      <path d="M6.5 4.482c1.664-1.673 5.825 1.254 0 5.018-5.825-3.764-1.664-6.69 0-5.018"/>
+      <path d="M13 6.5a6.47 6.47 0 0 1-1.258 3.844q.06.044.115.098l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1-.1-.115h.002A6.5 6.5 0 1 1 13 6.5M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11"/>
+      </svg>
+  </button>
+</div>
+           {% for error in form.query.errors %}
+            <span class="text-danger">{{ error }}</span>
+	        {% endfor %}
+<br>
+     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+     <script>
+       function onSubmit(token) {
+         document.getElementById("log_reg").submit();
+       }
+     </script>
+</form>
+
+    <div  id="results">
+    {% include 'search/search_words_results.html' %}
+    </div>
+
+<div style="clear:both;"></div>
+{% endblock %}

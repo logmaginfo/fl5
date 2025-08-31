@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+{{ super() }}
+    <center>
+
+<img src="{{ url_for('static', filename='404.png') }}" />
+
+        <h1>Ссылка устарела</h1>
+
+    </center>
+{% endblock %}
